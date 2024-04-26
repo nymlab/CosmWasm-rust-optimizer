@@ -1,8 +1,8 @@
 # Docker names (DN) for the images
-DN_OPTIMIZER := "cosmwasm/optimizer"
-DN_RUST_OPTIMIZER := "cosmwasm/rust-optimizer"
-DN_WORKSPACE_OPTIMIZER := "cosmwasm/workspace-optimizer"
-DOCKER_TAG := 0.15.1
+DN_OPTIMIZER := "nymlab/optimizer"
+DN_RUST_OPTIMIZER := "nymlab/rust-optimizer"
+DN_WORKSPACE_OPTIMIZER := "nymlab/workspace-optimizer"
+DOCKER_TAG := 0.15.1-clang
 
 # Native arch
 BUILDARCH := $(shell uname -m)
