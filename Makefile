@@ -1,7 +1,7 @@
 # Docker names (DN) for the images
-DN_OPTIMIZER := "nymlab/optimizer"
-DN_RUST_OPTIMIZER := "nymlab/rust-optimizer"
-DN_WORKSPACE_OPTIMIZER := "nymlab/workspace-optimizer"
+DN_OPTIMIZER := "ghrc.io/nymlab/optimizer"
+DN_RUST_OPTIMIZER := "ghrc.io/nymlab/rust-optimizer"
+DN_WORKSPACE_OPTIMIZER := "ghrc.io/nymlab/workspace-optimizer"
 DOCKER_TAG := 0.15.1-clang
 
 # Native arch
