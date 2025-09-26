@@ -4,11 +4,11 @@ This is a Docker build with a locked set of dependencies to produce
 reproducible builds of cosmwasm smart contracts. It also does heavy
 optimization on the build size, using binary stripping and `wasm-opt`.
 
-| Image               | Description                                                       | x86_64 images (default)                                                                                                                                                                         | ARM images (experimental<sup>1</sup>)                                                                                                                                                                             |
-| ------------------- | ----------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| optimizer           | Combines rust-optimizer and workspace-optimizer in a single image | cosmwasm/optimizer<br />[![DockerHub](https://img.shields.io/docker/v/cosmwasm/optimizer?sort=semver&style=plastic)](https://hub.docker.com/r/cosmwasm/optimizer)                               | cosmwasm/optimizer-arm64<br />[![DockerHub](https://img.shields.io/docker/v/cosmwasm/optimizer-arm64?sort=semver&style=plastic)](https://hub.docker.com/r/cosmwasm/optimizer-arm64)                               |
-| rust-optimizer      | Single contract builds                                            | cosmwasm/rust-optimizer<br />[![DockerHub](https://img.shields.io/docker/v/cosmwasm/rust-optimizer?sort=semver&style=plastic)](https://hub.docker.com/r/cosmwasm/rust-optimizer)                | cosmwasm/rust-optimizer-arm64<br />[![DockerHub](https://img.shields.io/docker/v/cosmwasm/rust-optimizer-arm64?sort=semver&style=plastic)](https://hub.docker.com/r/cosmwasm/rust-optimizer-arm64)                |
-| workspace-optimizer | Multi-contract workspaces (e.g. cosmwasm-plus)                    | cosmwasm/workspace-optimizer<br />[![DockerHub](https://img.shields.io/docker/v/cosmwasm/workspace-optimizer?sort=semver&style=plastic)](https://hub.docker.com/r/cosmwasm/workspace-optimizer) | cosmwasm/workspace-optimizer-arm64<br />[![DockerHub](https://img.shields.io/docker/v/cosmwasm/workspace-optimizer-arm64?sort=semver&style=plastic)](https://hub.docker.com/r/cosmwasm/workspace-optimizer-arm64) |
+| Image                                | Description                                                       | x86_64 images (default)                                                                                                                                                                             | ARM images (experimental<sup>1</sup>)                                                                                                                                                                                 |
+| ------------------------------------ | ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| optimizer                            | Combines rust-optimizer and workspace-optimizer in a single image | cosmwasm/optimizer<br />[![DockerHub](https://img.shields.io/docker/v/cosmwasm/optimizer?sort=semver&style=plastic)](https://hub.docker.com/r/cosmwasm/optimizer)                                   | cosmwasm/optimizer-arm64<br />[![DockerHub](https://img.shields.io/docker/v/cosmwasm/optimizer-arm64?sort=semver&style=plastic)](https://hub.docker.com/r/cosmwasm/optimizer-arm64)                                   |
+| ~~rust-optimizer~~ _deprecated_      | ~~Single contract builds~~                                        | ~~cosmwasm/rust-optimizer~~<br />[![DockerHub](https://img.shields.io/docker/v/cosmwasm/rust-optimizer?sort=semver&style=plastic)](https://hub.docker.com/r/cosmwasm/rust-optimizer)                | ~~cosmwasm/rust-optimizer-arm64~~<br />[![DockerHub](https://img.shields.io/docker/v/cosmwasm/rust-optimizer-arm64?sort=semver&style=plastic)](https://hub.docker.com/r/cosmwasm/rust-optimizer-arm64)                |
+| ~~workspace-optimizer~~ _deprecated_ | ~~Multi-contract workspaces (e.g. cosmwasm-plus)~~                | ~~cosmwasm/workspace-optimizer~~<br />[![DockerHub](https://img.shields.io/docker/v/cosmwasm/workspace-optimizer?sort=semver&style=plastic)](https://hub.docker.com/r/cosmwasm/workspace-optimizer) | ~~cosmwasm/workspace-optimizer-arm64~~<br />[![DockerHub](https://img.shields.io/docker/v/cosmwasm/workspace-optimizer-arm64?sort=semver&style=plastic)](https://hub.docker.com/r/cosmwasm/workspace-optimizer-arm64) |
 
 <sup>1</sup> ARM images do not produce the same output as the default images and are discouraged for production use. See [Notice](#notice) below.
 
@@ -30,7 +30,7 @@ you to produce a smaller build that works with the cosmwasm integration tests
 docker run --rm -v "$(pwd)":/code \
   --mount type=volume,source="$(basename "$(pwd)")_cache",target=/target \
   --mount type=volume,source=registry_cache,target=/usr/local/cargo/registry \
-  cosmwasm/optimizer:0.15.0
+  cosmwasm/optimizer:0.17.0
 ```
 
 Demo this with `cosmwasm-examples` (going into eg. `erc20` subdir before running),
@@ -63,7 +63,7 @@ To compile all contracts in the workspace deterministically, you can run:
 docker run --rm -v "$(pwd)":/code \
   --mount type=volume,source="$(basename "$(pwd)")_cache",target=/target \
   --mount type=volume,source=registry_cache,target=/usr/local/cargo/registry \
-  cosmwasm/optimizer:0.15.0
+  cosmwasm/optimizer:0.17.0
 ```
 
 The downside is that to verify one contract in the workspace, you need to compile them
@@ -89,7 +89,7 @@ case, we can use the optimize.sh command:
 docker run --rm -v "$(pwd)":/code \
   --mount type=volume,source="devcontract_cache_burner",target=/code/contracts/burner/target \
   --mount type=volume,source=registry_cache,target=/usr/local/cargo/registry \
-  cosmwasm/optimizer:0.15.0 ./contracts/burner
+  cosmwasm/optimizer:0.17.0 ./contracts/burner
 ```
 
 ## Caches
@@ -126,7 +126,7 @@ This has been tested on Linux (Ubuntu / Debian). There are currently versions of
 architectures: Intel/Amd 64-bits, and Arm 64-bits (these run natively on Mac M1 machines).
 
 **However**, the native Arm version produces different wasm artifacts than the Intel version. Given that that impacts
-reproducibility, non-Intel images and build artifacts contain a "-arm64" suffix, to differentiate and flag them.
+reproducibility, non-Intel images contain a "-arm64" suffix to differentiate them.
 
 Arm images are released to ease development and testing on Mac M1 machines. **For release / production use,
 only contracts built with the Intel optimizers must be used.**

@@ -6,11 +6,6 @@ command -v shellcheck >/dev/null && shellcheck "$0"
 
 export PATH="$PATH:/root/.cargo/bin"
 
-# Suffix for non-Intel built artifacts
-MACHINE=$(uname -m)
-SUFFIX=${MACHINE#x86_64}
-SUFFIX=${SUFFIX:+-$SUFFIX}
-
 # Debug toolchain and default Rust version
 rustup toolchain list
 cargo --version
@@ -47,17 +42,22 @@ echo "Building project $(realpath "$PROJECTDIR") ..."
 
 echo "Optimizing artifacts ..."
 for WASM in /target/wasm32-unknown-unknown/release/*.wasm; do
-  OUT_FILENAME=$(basename "$WASM" .wasm)${SUFFIX}.wasm
+  [ -e "$WASM" ] || continue # https://superuser.com/a/519493
+
+  OUT_FILENAME=$(basename "$WASM")
   echo "Optimizing $OUT_FILENAME ..."
-  # --signext-lowering is needed to support blockchains runnning CosmWasm < 1.3. It can be removed eventually
-  wasm-opt -Os --signext-lowering "$WASM" -o "artifacts/$OUT_FILENAME"
+  wasm-opt -Os "$WASM" -o "artifacts/$OUT_FILENAME"
 done
 
 echo "Post-processing artifacts..."
 (
   cd artifacts
-  # create hashes
-  sha256sum -- *.wasm | tee checksums.txt
+
+  if test -n "$(find . -maxdepth 1 -name '*.wasm' -print -quit)"; then
+    sha256sum -- *.wasm | tee checksums.txt
+  else
+    echo "Warn: No .wasm file built. Check your build configuration in Cargo.toml."
+  fi
 )
 
-echo "done"
+echo "Done."

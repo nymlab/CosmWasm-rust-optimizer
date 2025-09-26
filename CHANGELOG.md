@@ -2,6 +2,41 @@
 
 ## [Unreleased]
 
+## [0.17.0] - 2025-06-26
+
+- Bump Rust to 1.86.0. ([#168])
+- Remove `--signext-lowering` flag from `wasm-opt`. ([#168])
+
+Note that contracts built with this version _require CosmWasm 3.0+_ on the chain and cannot be
+uploaded to chains running lower versions.
+
+[#168]: https://github.com/CosmWasm/optimizer/pull/168
+
+## [0.16.1] - 2024-10-11
+
+- Bump Rust to current stable 1.81.0
+
+## [0.16.0] - 2024-06-06
+
+- Bump Rust to current stable 1.78.0.
+- Remove "-aarch64" suffix from filename when .wasm files are built on an ARM system.
+  There is no good reason for those given that the builder images for ARM have a
+  different name and each builder image produces different results. ([#151])
+- Allow configuring multiple builds in a codebase using `[package.metadata.optimizer]` settings
+  in `Cargo.toml` ([#148], [#156]). E.g.
+  ```
+  [package.metadata.optimizer]
+  standard-build = true
+  builds = [
+    { name = "debug", features = ["debug"] }
+    { name = "tokenfactory", features = ["tokenfactory"], default-features = false },
+  ]
+  ```
+
+[#151]: https://github.com/CosmWasm/optimizer/issues/151
+[#148]: https://github.com/CosmWasm/optimizer/pull/148
+[#156]: https://github.com/CosmWasm/optimizer/pull/156
+
 ## [0.15.1] - 2024-02-25
 
 - Bump Rust to current stable 1.75.0.
@@ -258,7 +293,10 @@ sources and should not be used. 0.7.0, 0.7.1 and 0.7.3 unaffected.
 - Bump emscripten to 1.39.8-fastcomp
 - Bump Rust to 1.41.0
 
-[unreleased]: https://github.com/CosmWasm/rust-optimizer/compare/v0.15.1...HEAD
+[unreleased]: https://github.com/CosmWasm/rust-optimizer/compare/v0.17.0...HEAD
+[0.17.0]: https://github.com/CosmWasm/rust-optimizer/compare/v0.16.1...v0.17.0
+[0.16.1]: https://github.com/CosmWasm/rust-optimizer/compare/v0.16.0...v0.16.1
+[0.16.0]: https://github.com/CosmWasm/rust-optimizer/compare/v0.15.1...v0.16.0
 [0.15.1]: https://github.com/CosmWasm/rust-optimizer/compare/v0.15.0...v0.15.1
 [0.15.0]: https://github.com/CosmWasm/rust-optimizer/compare/v0.14.0...v0.15.0
 [0.14.0]: https://github.com/CosmWasm/rust-optimizer/compare/v0.13.0...v0.14.0
