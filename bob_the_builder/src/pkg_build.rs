@@ -71,7 +71,7 @@ impl Build {
         // Run the build
         let mut child = Command::new(crate::CARGO_PATH)
             .args(&args)
-            .env("RUSTFLAGS", "-C link-arg=-s")
+            .env("RUSTFLAGS", "-C link-arg=-s -C target-feature=-bulk-memory")
             .current_dir(fs::canonicalize(contract).unwrap())
             .spawn()
             .unwrap();

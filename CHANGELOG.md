@@ -2,6 +2,11 @@
 
 ## [Unreleased]
 
+## [0.18.0] - 2025-12-10
+
+- Bump Rust to 1.88.0
+- Add '--enable-bulk-memory' flag to 'wasm-opt'.
+
 ## [0.17.0] - 2025-06-26
 
 - Bump Rust to 1.86.0. ([#168])

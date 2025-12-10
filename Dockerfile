@@ -1,4 +1,4 @@
-FROM rust:1.86.0-alpine AS targetarch
+FROM rust:1.88.0-alpine AS targetarch
 
 ARG BUILDPLATFORM
 ARG TARGETPLATFORM
@@ -64,7 +64,7 @@ ENV CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse
 
 # Build bob binary
 # Those RUSTFLAGS reduce binary size from 4MB to 600 KB
-RUN cd bob_the_builder && RUSTFLAGS='-C link-arg=-s' cargo build --release
+RUN cd bob_the_builder && RUSTFLAGS='-C link-arg=-s -C target-feature=-bulk-memory' cargo build --release
 # Check bob binary
 RUN cd bob_the_builder && \
   ls -lh target/release/bob && \
@@ -74,7 +74,7 @@ RUN cd bob_the_builder && \
 #
 # rust-optimizer target
 #
-FROM rust:1.86.0-alpine AS rust-optimizer
+FROM rust:1.88.0-alpine AS rust-optimizer
 
 # Download the crates.io index using the new sparse protocol to improve performance
 ENV CARGO_REGISTRIES_CRATES_IO_PROTOCOL=sparse

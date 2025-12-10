@@ -2,7 +2,7 @@
 DN_OPTIMIZER := "ghcr.io/nymlab/optimizer"
 DN_RUST_OPTIMIZER := "ghcr.io/nymlab/rust-optimizer"
 DN_WORKSPACE_OPTIMIZER := "ghcr.io/nymlab/workspace-optimizer"
-DOCKER_TAG := 0.17.0-clang
+DOCKER_TAG := 0.18.0-clang
 
 
 # Native arch
